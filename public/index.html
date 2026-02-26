@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>kimuchi-game</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🎮 kimuchi-game</h1>
+      <p>近未来ゲームプラットフォーム</p>
+    </header>
+
+    <section id="authPanel" class="card">
+      <h2>ログイン / 登録</h2>
+      <div class="tabs">
+        <button class="tab active" data-tab="user">一般ユーザー</button>
+        <button class="tab" data-tab="admin">管理者</button>
+      </div>
+
+      <div id="userAuth" class="auth-body">
+        <input id="username" placeholder="ユーザー名" />
+        <input id="password" placeholder="パスワード" type="password" />
+        <div class="row">
+          <button id="registerBtn">新規登録</button>
+          <button id="loginBtn">ログイン</button>
+        </div>
+      </div>
+
+      <div id="adminAuth" class="auth-body hidden">
+        <input id="adminId" placeholder="管理者ID (kimuti)" />
+        <input id="adminPassword" placeholder="管理者パスワード" type="password" />
+        <button id="adminLoginBtn">管理者ログイン</button>
+      </div>
+
+      <p id="authMessage"></p>
+    </section>
+
+    <section id="mainPanel" class="hidden">
+      <div class="grid-2">
+        <div class="card">
+          <h3>プロフィール</h3>
+          <p>名前: <span id="profileName"></span></p>
+          <p>💰ポイント: <span id="profilePoints">0</span></p>
+          <p>最終ログイン: <span id="profileLastLogin">-</span></p>
+          <p>状態: <span id="profileOnline">⚪ オフライン</span></p>
+          <button id="refreshStateBtn">状態更新</button>
+        </div>
+
+        <div class="card">
+          <h3>オンラインユーザー</h3>
+          <ul id="onlineList"></ul>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>全体チャット</h3>
+          <div id="chatBox" class="chat-box"></div>
+          <div class="row">
+            <input id="chatInput" placeholder="メッセージ" />
+            <button id="chatSendBtn">送信</button>
+          </div>
+          <div class="row">
+            <select id="stampSelect"></select>
+            <button id="stampSendBtn">スタンプ送信</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>ガチャ / 所持品</h3>
+          <button id="gachaBtn">🎁 ガチャを引く</button>
+          <p id="gachaResult"></p>
+          <h4>アイテム</h4>
+          <ul id="itemList"></ul>
+          <h4>スタンプ</h4>
+          <ul id="stampList"></ul>
+        </div>
+      </div>
+
+      <section class="card">
+        <h3>ゲームプラットフォーム</h3>
+        <div class="game-buttons">
+          <button data-game="battle">ゲーム① バトル対戦</button>
+          <button data-game="tag">ゲーム② 鬼ごっこ対戦</button>
+          <button data-game="shooting">ゲーム③ シューティング対戦</button>
+          <button data-game="future">ゲーム④ 自由追加枠</button>
+        </div>
+        <div id="gameArea" class="game-area"></div>
+      </section>
+
+      <section id="adminPanel" class="card hidden">
+        <h3>管理者画面</h3>
+        <div class="grid-2">
+          <div>
+            <h4>ユーザー一覧</h4>
+            <ul id="adminUsers"></ul>
+            <h4>付与操作</h4>
+            <input id="grantUser" placeholder="対象ユーザー" />
+            <input id="grantPoints" placeholder="付与ポイント" type="number" />
+            <input id="grantItem" placeholder="付与アイテム" />
+            <button id="grantBtn">付与する</button>
+            <button id="forceLogoutBtn">強制ログアウト</button>
+          </div>
+          <div>
+            <h4>通知一覧</h4>
+            <ul id="notificationList"></ul>
+            <h4>ログ</h4>
+            <ul id="logList"></ul>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
