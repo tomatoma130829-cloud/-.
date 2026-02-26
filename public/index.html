@@ -7,115 +7,124 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="container">
-    <header>
+  <main class="container">
+    <header class="hero card">
       <h1>🎮 kimuchi-game</h1>
-      <p>近未来ゲームプラットフォーム</p>
+      <p>ローカル保存型ゲームプラットフォーム（GitHub Pages対応）</p>
+      <div id="sessionInfo" class="session-info"></div>
     </header>
 
-    <section id="authPanel" class="card">
-      <h2>ログイン / 登録</h2>
+    <section id="loginScreen" class="card screen">
+      <h2>ログイン画面</h2>
       <div class="tabs">
-        <button class="tab active" data-tab="user">一般ユーザー</button>
-        <button class="tab" data-tab="admin">管理者</button>
+        <button class="tab active" data-auth="user">一般ユーザー</button>
+        <button class="tab" data-auth="admin">管理者</button>
       </div>
 
-      <div id="userAuth" class="auth-body">
-        <input id="username" placeholder="ユーザー名" />
-        <input id="password" placeholder="パスワード" type="password" />
+      <div id="userAuthPanel">
+        <input id="registerUsername" placeholder="ユーザー名" />
+        <input id="registerPassword" placeholder="パスワード" type="password" />
         <div class="row">
           <button id="registerBtn">新規登録</button>
-          <button id="loginBtn">ログイン</button>
+          <button id="userLoginBtn">ログイン</button>
         </div>
       </div>
 
-      <div id="adminAuth" class="auth-body hidden">
-        <input id="adminId" placeholder="管理者ID (kimuti)" />
-        <input id="adminPassword" placeholder="管理者パスワード" type="password" />
+      <div id="adminAuthPanel" class="hidden">
+        <input id="adminId" placeholder="管理者ID" value="kimuti" />
+        <input id="adminPassword" type="password" placeholder="管理者パスワード" />
         <button id="adminLoginBtn">管理者ログイン</button>
       </div>
 
-      <p id="authMessage"></p>
+      <p id="loginMessage" class="message"></p>
     </section>
 
-    <section id="mainPanel" class="hidden">
-      <div class="grid-2">
-        <div class="card">
+    <section id="homeScreen" class="card screen hidden">
+      <h2>ホーム画面</h2>
+      <div class="grid">
+        <article>
           <h3>プロフィール</h3>
-          <p>名前: <span id="profileName"></span></p>
-          <p>💰ポイント: <span id="profilePoints">0</span></p>
-          <p>最終ログイン: <span id="profileLastLogin">-</span></p>
-          <p>状態: <span id="profileOnline">⚪ オフライン</span></p>
-          <button id="refreshStateBtn">状態更新</button>
-        </div>
-
-        <div class="card">
-          <h3>オンラインユーザー</h3>
-          <ul id="onlineList"></ul>
-        </div>
+          <p>ユーザー: <b id="profileName">-</b></p>
+          <p>権限: <b id="profileRole">-</b></p>
+          <p>ポイント: <b id="profilePoints">0</b></p>
+        </article>
+        <article>
+          <h3>所持品</h3>
+          <p>アイテム: <span id="itemCount">0</span> 個</p>
+          <p>スタンプ: <span id="stampCount">0</span> 個</p>
+          <button id="logoutBtn" class="danger">ログアウト</button>
+        </article>
       </div>
-
-      <div class="grid-2">
-        <div class="card">
-          <h3>全体チャット</h3>
-          <div id="chatBox" class="chat-box"></div>
-          <div class="row">
-            <input id="chatInput" placeholder="メッセージ" />
-            <button id="chatSendBtn">送信</button>
-          </div>
-          <div class="row">
-            <select id="stampSelect"></select>
-            <button id="stampSendBtn">スタンプ送信</button>
-          </div>
-        </div>
-
-        <div class="card">
-          <h3>ガチャ / 所持品</h3>
-          <button id="gachaBtn">🎁 ガチャを引く</button>
-          <p id="gachaResult"></p>
-          <h4>アイテム</h4>
-          <ul id="itemList"></ul>
-          <h4>スタンプ</h4>
-          <ul id="stampList"></ul>
-        </div>
-      </div>
-
-      <section class="card">
-        <h3>ゲームプラットフォーム</h3>
-        <div class="game-buttons">
-          <button data-game="battle">ゲーム① バトル対戦</button>
-          <button data-game="tag">ゲーム② 鬼ごっこ対戦</button>
-          <button data-game="shooting">ゲーム③ シューティング対戦</button>
-          <button data-game="future">ゲーム④ 自由追加枠</button>
-        </div>
-        <div id="gameArea" class="game-area"></div>
-      </section>
-
-      <section id="adminPanel" class="card hidden">
-        <h3>管理者画面</h3>
-        <div class="grid-2">
-          <div>
-            <h4>ユーザー一覧</h4>
-            <ul id="adminUsers"></ul>
-            <h4>付与操作</h4>
-            <input id="grantUser" placeholder="対象ユーザー" />
-            <input id="grantPoints" placeholder="付与ポイント" type="number" />
-            <input id="grantItem" placeholder="付与アイテム" />
-            <button id="grantBtn">付与する</button>
-            <button id="forceLogoutBtn">強制ログアウト</button>
-          </div>
-          <div>
-            <h4>通知一覧</h4>
-            <ul id="notificationList"></ul>
-            <h4>ログ</h4>
-            <ul id="logList"></ul>
-          </div>
-        </div>
-      </section>
     </section>
-  </div>
 
-  <script src="/socket.io/socket.io.js"></script>
+    <section id="gameSelectScreen" class="card screen hidden">
+      <h2>ゲーム選択画面</h2>
+      <div class="game-grid">
+        <button data-game="battle">⚔️ バトルゲーム（CPU対戦）</button>
+        <button data-game="tag">🏃 鬼ごっこ対戦（CPU対戦）</button>
+        <button data-game="shooting">🔫 シューティング対戦（CPU対戦）</button>
+        <button data-game="mini">🧩 ミニゲーム追加枠</button>
+      </div>
+    </section>
+
+    <section id="gameScreen" class="card screen hidden">
+      <h2>ゲーム画面</h2>
+      <p id="gameTitle">ゲームを選択してください。</p>
+      <div id="gameArea"></div>
+    </section>
+
+    <section id="gachaScreen" class="card screen hidden">
+      <h2>通貨 / アイテム / ガチャ</h2>
+      <p>1回 30ポイント消費。結果は localStorage に保存されます。</p>
+      <div class="row">
+        <button id="gachaBtn">🎁 ガチャを回す</button>
+        <button id="dailyPointBtn">💰 デイリーポイント +50</button>
+      </div>
+      <p id="gachaResult">まだ結果はありません。</p>
+      <div class="grid">
+        <article>
+          <h3>アイテム一覧</h3>
+          <ul id="itemList"></ul>
+        </article>
+        <article>
+          <h3>スタンプ一覧</h3>
+          <ul id="stampList"></ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="chatScreen" class="card screen hidden">
+      <h2>チャット画面（ローカルチャット）</h2>
+      <div id="chatLog" class="chat-log"></div>
+      <div class="row">
+        <input id="chatInput" placeholder="メッセージ" />
+        <button id="sendChatBtn">送信</button>
+      </div>
+      <div class="row">
+        <select id="stampSelect"></select>
+        <button id="sendStampBtn">スタンプ送信</button>
+      </div>
+    </section>
+
+    <section id="adminScreen" class="card screen hidden">
+      <h2>管理者機能</h2>
+      <div class="grid">
+        <article>
+          <h3>ユーザー状態確認</h3>
+          <ul id="adminUsers"></ul>
+        </article>
+        <article>
+          <h3>ポイント・アイテム付与</h3>
+          <input id="grantTarget" placeholder="対象ユーザー名" />
+          <input id="grantPoints" type="number" placeholder="追加ポイント" />
+          <input id="grantItem" placeholder="追加アイテム（任意）" />
+          <button id="grantBtn">付与を実行</button>
+          <p id="adminMessage" class="message"></p>
+        </article>
+      </div>
+    </section>
+  </main>
+
   <script src="app.js"></script>
 </body>
 </html>
